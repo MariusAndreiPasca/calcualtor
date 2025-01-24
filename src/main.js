@@ -3,8 +3,8 @@ let display = document.querySelector(".app-screen .screen-content");
 let key = document.querySelectorAll(".key");
 
 //Status variables
-let currentInput = "";
-let previousInput = "";
+let currInput = "";
+let prevInput = "";
 let operator = "";
 let err = "Error";
 
@@ -15,8 +15,8 @@ function updateDisplay(value) {
 
 //Operation function
 function calculate() {
-  let x = parseFloat(previousInput);
-  let y = parseFloat(currentInput);
+  let x = parseFloat(prevInput);
+  let y = parseFloat(currInput);
   let result;
 
   if(isNaN(x) || isNaN(y)) return err;
@@ -46,58 +46,58 @@ function buttonClick(event) {
 
 //If number or .
   if(!isNaN(value) || value === ".") {
-    if (currentInput === "0" || currentInput === "") {
+    if (currInput === "0" || currInput === "") {
       if(value === ".") {
-        currentInput = "0."
+        currInput = "0."
       } else {
-        currentInput = value;
+        currInput = value;
       }
     } else {
       
-      currentInput += value;
+      currInput += value;
     }
 
-    updateDisplay(currentInput);
+    updateDisplay(currInput);
   }
 
 //If operator 
   if(arr.includes(value) && value !== "+/-") {
-    if(!currentInput) return err;
+    if(!currInput) return err;
 
-    if(previousInput && operator) {
-      currentInput = calculate();
-      updateDisplay(currentInput);
+    if(prevInput && operator) {
+      currInput = calculate();
+      updateDisplay(currInput);
     }
 
     operator = value;
-    previousInput = currentInput;
-    currentInput = "";
+    prevInput = currInput;
+    currInput = "";
     return;
   }
 
 //If +/- 
   if(value === "+/-") {
-    if(!currentInput ) return err; 
-    currentInput = (parseFloat(currentInput) * -1).toString();
-    updateDisplay(currentInput);  
+    if(!currInput ) return err; 
+    currInput = (parseFloat(currInput) * -1).toString();
+    updateDisplay(currInput);  
     return;  
   }  
 
 //If = 
   if(value === "=") {
-    if(!currentInput || !previousInput || !operator) return err;
-    
-    currentInput = calculate();
-    updateDisplay(currentInput);
-    previousInput = "";
+    if(!currInput || !prevInput || !operator) return err;
+
+    currInput = calculate();
+    updateDisplay(currInput);
+    prevInput = "";
     operator = "";
     return;    
   }
 
 //If Clear 
   if(value === "AC") {
-    currentInput = "";
-    previousInput = "";
+    currInput = "";
+    prevInput = "";
     operator = "";
     updateDisplay("0");
     return;
